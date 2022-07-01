@@ -11,7 +11,14 @@ const Phonebook = (props) => {
     // do delete
     phonebookService
       .deleteObj(id)
-      .then(_=>props.update())
+      .then(_=>{
+        props.update()
+        props.setMessage.success(`${name} has been deleted`)
+      })
+      .catch(error => {
+        // console.log(error);
+        props.setMessage.error('Oops, '+error.message)
+      })
   }
 
   // render result  

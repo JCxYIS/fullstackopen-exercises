@@ -18,14 +18,20 @@ const PersonForm = (props) => {
                 // update
                 phonebookService
                     .update(props.persons[dulpId].id, newObject)
-                    .then(_ => props.update())
+                    .then(_ =>{ 
+                        props.update()
+                        props.setMessage.success(`${newName} has been updated`)
+                    })
             }
         }
         else {
             // create
             phonebookService
                 .create(newObject)
-                .then(_=>props.update())
+                .then(_=>{ 
+                    props.update()
+                    props.setMessage.success(`${newName} has been added to phonebook`)
+                })
         }
         
     }
