@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import phonebookService from '../services/phonebookService'
 
 const PersonForm = (props) => {
     const [newName, setNewName] = useState('')
@@ -6,15 +7,28 @@ const PersonForm = (props) => {
 
     function addNameButtonClicked(event) {
         event.preventDefault()
-    
+
         // let newName = event.target.form[0].value;
-        if(props.persons.find(p => p.name === newName)) {
-          alert(`${newName} is already added to phonebook`)
-          return;    
+        let newObject = { name: newName, number: newNumber }
+        
+        // check duplicate name
+        let dulpId = props.persons.findIndex(p => p.name === newName)
+        if (dulpId !== -1) {
+            if(window.confirm(`${newName} is already added to phonebook. Replace with the new one?`)) {
+                // update
+                phonebookService
+                    .update(props.persons[dulpId].id, newObject)
+                    .then(_ => props.update())
+            }
         }
-    
-        props.setPersons(props.persons.concat({ name: newName, number: newNumber }))
-      }
+        else {
+            // create
+            phonebookService
+                .create(newObject)
+                .then(_=>props.update())
+        }
+        
+    }
 
     return (
         <div>
