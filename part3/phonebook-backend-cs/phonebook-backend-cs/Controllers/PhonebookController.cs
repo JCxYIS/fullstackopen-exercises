@@ -53,6 +53,19 @@ namespace phonebook_backend_cs.Controllers
                 return NotFound();
         }
 
+        [HttpPut("/api/persons/{id}")]
+        public async Task<IActionResult> Put(string id, [FromBody]PhonebookEntry entry)
+        {
+            var result = await _phonebookService.GetAsync(id);
+            if (result != null)
+            {
+                await _phonebookService.UpdateAsync(id, entry);
+                return Ok();
+            }
+            else
+                return NotFound();
+        }
+
         [HttpPost("/api/persons")]
         public async Task<IActionResult> PostAsync([FromBody] PhonebookEntry entry)
         {

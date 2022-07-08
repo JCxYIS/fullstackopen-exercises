@@ -10,7 +10,13 @@ namespace phonebook_backend_cs.Services
 
         public PhonebookService()
         {
-            var settings = MongoClientSettings.FromConnectionString("mongodb+srv://hahatest123:hahatest123@fullstack-exercise-phon.iaigvqb.mongodb.net/?retryWrites=true&w=majority");
+            var password = Environment.GetEnvironmentVariable("MONGO_PSW");
+            if(password == null)
+            {
+                throw new Exception("Please specify MONGO_PSW");
+            }
+            
+            var settings = MongoClientSettings.FromConnectionString($"mongodb+srv://hahatest123:{password}@fullstack-exercise-phon.iaigvqb.mongodb.net/?retryWrites=true&w=majority");
             settings.ServerApi = new ServerApi(ServerApiVersion.V1);
             var client = new MongoClient(settings);
             var database = client.GetDatabase("test");
