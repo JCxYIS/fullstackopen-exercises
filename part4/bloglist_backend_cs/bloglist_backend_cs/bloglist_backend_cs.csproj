@@ -7,12 +7,21 @@
     <RootNamespace>bloglist_backend_cs</RootNamespace>
     <UserSecretsId>b6ada4d1-c04e-4e21-b6e9-c1f4ca4c2c35</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileRunEnvironmentFiles>settings.env</DockerfileRunEnvironmentFiles>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="settings.env" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="settings.env" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.16.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
-  </ItemGroup>
+  </ItemGroup>  
 
 </Project>

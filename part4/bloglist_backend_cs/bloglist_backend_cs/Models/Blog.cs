@@ -1,7 +1,13 @@
-﻿namespace bloglist_backend_cs.Models
+﻿using MongoDB.Bson;
+using System.Text.Json.Serialization;
+
+namespace bloglist_backend_cs.Models
 {
     public class Blog
     {
+        [JsonIgnore]
+        public ObjectId id { get; set; }
+        
         public string title { get; set; } = "";
         public string author { get; set; } = "";
         public string url { get; set; } = "";
