@@ -10,9 +10,9 @@ namespace bloglist_backend_cs.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
-        private BlogService _blogService;
+        private IBlogService _blogService;
 
-        public BlogController(BlogService blogService)
+        public BlogController(IBlogService blogService)
         {
             _blogService = blogService;
         }

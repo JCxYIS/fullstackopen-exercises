@@ -11,7 +11,7 @@ builder.Services.AddCors(option =>
     ));
 
 // Add services to the container.
-builder.Services.AddSingleton<BlogService>();
+builder.Services.AddSingleton<IBlogService, BlogService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

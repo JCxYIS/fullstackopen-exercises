@@ -3,10 +3,10 @@ using MongoDB.Driver;
 
 namespace bloglist_backend_cs.Services
 {
-    public class BlogService
+    public class BlogService : IBlogService
     {
         IMongoCollection<Blog> _blogs;
-        
+
         public BlogService()
         {
             var psw = Environment.GetEnvironmentVariable("MANGO_PSW");
@@ -18,8 +18,8 @@ namespace bloglist_backend_cs.Services
             var database = client.GetDatabase("test");
 
             _blogs = database.GetCollection<Blog>("BlogList");
-        } 
-        
+        }
+
         public async Task<List<Blog>> GetBlogsAsync()
         {
             return await _blogs.Find(blog => true).ToListAsync();
