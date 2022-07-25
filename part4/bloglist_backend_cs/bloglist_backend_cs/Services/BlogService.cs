@@ -1,4 +1,5 @@
 ﻿using bloglist_backend_cs.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace bloglist_backend_cs.Services
@@ -7,27 +8,34 @@ namespace bloglist_backend_cs.Services
     {
         IMongoCollection<Blog> _blogs;
 
-        public BlogService()
-        {
-            var psw = Environment.GetEnvironmentVariable("MANGO_PSW");
-            if (psw == null)
-                throw new Exception("MANGO_PSW is null");
-            var settings = MongoClientSettings.FromConnectionString($"mongodb+srv://hahatest123:{psw}@fullstack-exercise-phon.iaigvqb.mongodb.net/?retryWrites=true&w=majority");
-            settings.ServerApi = new ServerApi(ServerApiVersion.V1);
-            var client = new MongoClient(settings);
-            var database = client.GetDatabase("test");
-
-            _blogs = database.GetCollection<Blog>("BlogList");
+        public BlogService(DatabaseService databaseService)
+        {            
+            _blogs = databaseService.Database.GetCollection<Blog>("BlogList");
         }
 
         public async Task<List<Blog>> GetBlogsAsync()
         {
-            return await _blogs.Find(blog => true).ToListAsync();
+            return (await _blogs.FindAsync(blog => true)).ToList();
+        }
+
+        public async Task<Blog> GetBlogAsync(string id)
+        {
+            return (await _blogs.FindAsync(blog => blog.id == id)).FirstOrDefault();
         }
 
         public async Task CreateAsync(Blog blog)
         {
             await _blogs.InsertOneAsync(blog);
+        }
+        
+        public async Task UpdateAsync(string id, Blog newData)
+        {
+            await _blogs.ReplaceOneAsync(blog => blog.id == id, newData);
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            await _blogs.DeleteOneAsync(blog => blog.id == id);
         }
     }
 }

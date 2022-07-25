@@ -22,7 +22,7 @@ namespace bloglist_backend_cs.Utils
         public static Blog? FavoriteBlog(Blog[] blogs)
         {
             int max = 0;
-            Blog maxBlog = null;
+            Blog? maxBlog = null;
             foreach (var blog in blogs)
             {
                 if (blog.likes > max)
