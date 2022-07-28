@@ -29,14 +29,20 @@ namespace bloglist_backend_cs.Controllers
         }
 
         [HttpPost("/api/login")]
-        public async Task<IActionResult> Login(string userName, string password)
+        public async Task<IActionResult> Login([FromBody]LoginForm loginForm)
         {
-            var result = await _userService.ValidateUser(userName, password);
+            var result = await _userService.ValidateUser(loginForm.userName, loginForm.password);
             if (result.IsSuccess)
             {
-                return Ok(new ResponseModel(true, "", _jwtService.GenerateToken(userName)));
+                return Ok(new ResponseModel(true, "", _jwtService.GenerateToken(loginForm.userName)));
             }
             return BadRequest(result);
+        }
+
+        public class LoginForm
+        {
+            public string userName { get; set; } = "";
+            public string password { get; set; } = "";
         }
 
         // GET api/<UsersController>/5
