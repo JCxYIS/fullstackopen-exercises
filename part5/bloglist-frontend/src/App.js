@@ -2,13 +2,19 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import accountService from './services/account'
+import CreateBlog from './components/CreateBlog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [token, setToken] = useState(null)
   const [user, setUser] = useState(null)
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  
+  const [createTitle, setCreateTitle] = useState('')
+  const [createAuthor, setCreateAuthor] = useState('')
+  const [createUrl, setCreateUrl] = useState('')
 
   useEffect(() => {
     // handler init login cache
@@ -53,6 +59,7 @@ const App = () => {
     }
     catch (exception) {
       alert('Login Failed. \n' + exception.response?.data?.message)
+      logout()
     }
   }
 
@@ -60,6 +67,23 @@ const App = () => {
     setToken(null)
     setUser(null)
     window.localStorage.removeItem('token')
+  }
+
+  const handleCreateBlog = async (event) => {
+    // event.preventDefault()
+    
+    try {
+      blogService.create({
+        "title": createTitle,
+        "author": createAuthor,
+        "url": createUrl
+      }, token)
+    } 
+    catch (exception) {
+      alert('Failed. \n')
+    }
+
+    window.location.reload()
   }
 
   /* -------------------------------------------------------------------------- */
@@ -92,9 +116,14 @@ const App = () => {
     )
   return (
     <div>
-      <h2>blogs</h2>
-      <h4>Welcome, {user?.name}</h4>
+      <h1>Blog List</h1>
+      <h3>Welcome, {user?.name} ({user?.username})</h3>
       <button onClick={logout}>Logout</button>
+
+      <h2>Create New</h2>
+      <CreateBlog onSubmit={handleCreateBlog} setTitle={setCreateTitle} setAuthor={setCreateAuthor} setUrl={setCreateUrl} />
+
+      <h2>Blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
