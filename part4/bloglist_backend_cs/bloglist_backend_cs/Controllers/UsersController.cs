@@ -19,8 +19,15 @@ namespace bloglist_backend_cs.Controllers
             _userService = userService;
             _jwtService = jwtService;
         }
-        
+
         // GET: api/<UsersController>
+        [HttpGet("")]
+        [Authorize]
+        public async Task<User> GetUser()
+        {
+            return await _userService.GetUser(User.Identity.Name);
+        }        
+
         [HttpGet("all")]
         [Authorize]
         public async Task<List<User>> GetAllUsers()

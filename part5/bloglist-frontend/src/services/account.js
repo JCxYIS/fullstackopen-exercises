@@ -1,10 +1,20 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3003/api/login'
+const baseUrl = 'http://localhost:3003'
+const loginUrl = baseUrl + '/api/login'
+const getUserUrl = baseUrl + '/api/users'
+
 
 const login = async credentials => {
-  const response = await axios.post(baseUrl, credentials)
+  const response = await axios.post(loginUrl, credentials)
 //   console.log(response)
   return response.data.data
 }
 
-export default { login }
+const getUser = async token => {
+    const response = await axios.get(getUserUrl, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    return response.data
+}
+
+export default { login, getUser }

@@ -50,7 +50,7 @@ namespace bloglist_backend_cs.Services
         /// <returns></returns>
         public async Task<ResponseModel<User>> ValidateUser(string userName, string password)
         {
-            var user = (await _users.FindAsync(u => u.name == userName)).FirstOrDefault();
+            var user = (await _users.FindAsync(u => u.username == userName)).FirstOrDefault();
             if (user == null)
             {
                 return new ResponseModel<User>(false, "No such account");
@@ -68,6 +68,11 @@ namespace bloglist_backend_cs.Services
         public async Task<List<User>> GetAllUsers()
         {
             return await _users.Find(_ => true).ToListAsync();
+        }
+
+        public async Task<User> GetUser(string userName)
+        {
+            return await _users.Find(u => u.username == userName).FirstOrDefaultAsync();
         }
 
         //----------------------------------------------------

@@ -5,7 +5,8 @@ import accountService from './services/account'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [loginToken, setLoginToken] = useState(null)
+  const [token, setToken] = useState(null)
+  const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -13,7 +14,8 @@ const App = () => {
     // handler init login cache
     const tokenCached = window.localStorage.getItem('token')
     if(tokenCached) {
-      setLoginToken(tokenCached)      
+      setToken(tokenCached)   
+      handleTokenToLogin(tokenCached)   
     }
 
     // print blog
@@ -32,10 +34,11 @@ const App = () => {
         "userName": username, 
         password,
       })      
-      setLoginToken(tokenGet)
+      setToken(tokenGet)
       window.localStorage.setItem('token', tokenGet)
       setUsername('')
       setPassword('')
+      handleTokenToLogin(tokenGet)
     } 
     catch (exception) {
       alert('Login Failed. \n' + exception.response?.data?.message)
@@ -43,10 +46,26 @@ const App = () => {
     }
   }
 
+  const handleTokenToLogin = async (token) => {
+    try {
+      const userGet = await accountService.getUser(token)
+      setUser(userGet);
+    }
+    catch (exception) {
+      alert('Login Failed. \n' + exception.response?.data?.message)
+    }
+  }
+
+  const logout = ()=>{
+    setToken(null)
+    setUser(null)
+    window.localStorage.removeItem('token')
+  }
+
   /* -------------------------------------------------------------------------- */
   
 
-  if(loginToken === null)
+  if(user === null)
     return (
       <form onSubmit={handleLogin}>
         <h2>Log in</h2>
@@ -74,6 +93,8 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <h4>Welcome, {user?.name}</h4>
+      <button onClick={logout}>Logout</button>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
