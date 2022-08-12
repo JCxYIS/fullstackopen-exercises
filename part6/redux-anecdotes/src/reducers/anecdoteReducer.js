@@ -1,3 +1,7 @@
+import { createSlice } from '@reduxjs/toolkit'
+import { showNotif } from './notificationReducer'
+
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,49 +23,75 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action = {type: '', data: undefined}) => {
-  console.log('state now: ', state)
-  console.log('action', action)
+/* -------------------------------------------------------------------------- */
+
+// redux reducer
+// const reducer = (state = initialState, action = {type: '', data: undefined}) => {
+//   console.log('state now: ', state)
+//   console.log('action', action)
   
-  let newState = [...state]
-  switch(action.type)
-  {
-    case 'VOTE':
-      newState = newState.map(a => {
-        if(a.id === action.data)
-        {
-          return {
-            ...a,
-            votes: a.votes+1
-          }
-        }
-        return a
-      });
-      break;
-    case 'CREATE':
-      newState = [...newState, asObject(action.data)]
-      break;
-  }
+//   let newState = [...state]
+//   switch(action.type)
+//   {
+//     case 'VOTE':
+//       newState = newState.map(a => {
+//         if(a.id === action.data)
+//         {
+//           return {
+//             ...a,
+//             votes: a.votes+1
+//           }
+//         }
+//         return a
+//       });
+//       break;
+//     case 'CREATE':
+//       newState = [...newState, asObject(action.data)]
+//       break;
+//   }
 
-  return newState
-}
+//   return newState
+// }
+
+
+// redux toolkit slice
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    createAnedote(state, action) {
+      const content = action.payload
+      state.push(asObject(content))
+    },
+    vote(state, action) {
+      const id = action.payload
+      state.find(a => a.id === id).votes += 1
+    }
+  },
+})
 
 /* -------------------------------------------------------------------------- */
 
-export const vote = (id) => {
-  return {
-    type: 'VOTE',
-    data: id
-  }
-}
+// redux actions
+// export const vote = (id) => {
+//   return {
+//     type: 'VOTE',
+//     data: id
+//   }
+// }
 
-export const createAnedote = (content) => {
-  return {
-    type: 'CREATE',
-    data: content
-  }
-}
+// export const createAnedote = (content) => {
+//   return {
+//     type: 'CREATE',
+//     data: content
+//   }
+// }
+
+
+// redux toolkit actions
+export const { createAnedote, vote } = anecdoteSlice.actions
 
 /* -------------------------------------------------------------------------- */
 
-export default reducer
+// export default reducer
+export default anecdoteSlice.reducer
