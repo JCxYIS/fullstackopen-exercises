@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { vote as voteFor } from '../reducers/anecdoteReducer'
+import { vote as voteFor, init } from '../reducers/anecdoteReducer'
 import { showNotif } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
@@ -13,6 +14,10 @@ const AnecdoteList = () => {
         }
     )
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(init()) 
+      }, [dispatch]) 
 
     const vote = (id, content) => {
         console.log('vote', id)

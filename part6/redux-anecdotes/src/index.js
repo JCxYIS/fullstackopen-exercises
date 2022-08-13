@@ -16,9 +16,6 @@ const store = configureStore({
   }
 })
 
-anecdoteService.getAll().then(anecdotes => {
-  store.dispatch(initAnedote(anecdotes))
-});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
