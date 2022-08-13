@@ -12,9 +12,6 @@ const Notification = () => {
   }
 
   if (notification) {  
-    setTimeout(() => {
-      dispatch(hideNotif())
-    }, 5000);
     return (
       <div>
         <div id="notif" style={style}>

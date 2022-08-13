@@ -5,5 +5,6 @@ Note: I used ASP.net (C#) to write all backend parts.
 
 Some exercises was skipped:
 - `4-8 ~ 4-14`, `4-23` web api tests
-- `4.17` mongoose `populate` function
+- `4-17` mongoose `populate` function
 - chap `5` : all after `5-5`
+- `6-19`, `6-20` connect

@@ -15,11 +15,18 @@ const slice = createSlice({
 
 export const { showNotif, hideNotif } = slice.actions;
 
+let lastHidePromise = undefined
+
 export const setNotif = (msg, secondsToHide) => {
     return async dispatch => {
       dispatch(showNotif(msg));
-      await new Promise(resolve => setTimeout(resolve, secondsToHide * 1000));
-      dispatch(hideNotif());
+      const hidePromise = new Promise(resolve => setTimeout(resolve, secondsToHide * 1000));
+      lastHidePromise = hidePromise;
+      
+      await lastHidePromise;
+
+      if(lastHidePromise === hidePromise) 
+        dispatch(hideNotif());
     }
   }
 
