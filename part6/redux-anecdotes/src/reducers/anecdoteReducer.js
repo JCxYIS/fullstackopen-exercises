@@ -62,11 +62,11 @@ const anecdoteSlice = createSlice({
     appendAnedote(state, action) {
       state.push(action.payload)
     },
-    vote(state, action) {
-      const id = action.payload
-      state.find(a => a.id === id).votes += 1
+    setOneAnedote(state, action) {
+      const index = state.findIndex(a => a.id === action.payload.id)
+      state[index] = action.payload
     },
-    initAnedote(state, action) {
+    setAnedote(state, action) {
       console.log(action)      
       return action.payload
     }
@@ -92,13 +92,13 @@ const anecdoteSlice = createSlice({
 
 
 // redux toolkit actions
-export const { vote, initAnedote, appendAnedote } = anecdoteSlice.actions
+export const { appendAnedote, setAnedote, setOneAnedote } = anecdoteSlice.actions
 
 // redux-thunk modded dispatch
-export const init = () => {
+export const initAnedote = () => {
   return async dispatch => {
     const anecdotes = await anecdoteService.getAll()
-    dispatch(initAnedote(anecdotes))
+    dispatch(setAnedote(anecdotes))
   }
 }
 
@@ -107,6 +107,15 @@ export const createAnedote = (content) => {
     const object = asObject(content)
     await anecdoteService.createNew(object)
     dispatch(appendAnedote(object))
+  }
+}
+
+export const voteAnedote = (anecdoteObject) => {
+  return async dispatch => {
+    const object = {...anecdoteObject}
+    object.votes += 1
+    await anecdoteService.put(object)
+    dispatch(setOneAnedote(object))
   }
 }
 

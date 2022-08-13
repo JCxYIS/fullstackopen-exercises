@@ -12,7 +12,7 @@ const AnecdoteForm = () => {
         const input = event.target.name
         // const newContent = anecdoteService.createNew(input.value)
         dispatch(createAnedote(input.value))
-        dispatch(showNotif("you created '" + input.value + "'"))
+        dispatch(showNotif("you created '" + input.value + "'", 5))
         input.value = ''
       }
 

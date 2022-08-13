@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { vote as voteFor, init } from '../reducers/anecdoteReducer'
-import { showNotif } from '../reducers/notificationReducer'
+import { initAnedote, voteAnedote } from '../reducers/anecdoteReducer'
+import { setNotif, showNotif } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
 
@@ -16,13 +16,13 @@ const AnecdoteList = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(init()) 
+        dispatch(initAnedote()) 
       }, [dispatch]) 
 
-    const vote = (id, content) => {
-        console.log('vote', id)
-        dispatch(voteFor(id))
-        dispatch(showNotif("you voted for '" + content + "'"))
+    const vote = (anecdote) => {
+        console.log('vote', anecdote.id)
+        dispatch(voteAnedote(anecdote))
+        dispatch(setNotif("you voted for '" + anecdote.content + "'", 2))
     }
 
     return (
@@ -34,7 +34,7 @@ const AnecdoteList = () => {
                     </div>
                     <div>
                         has {anecdote.votes}
-                        <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
+                        <button onClick={() => vote(anecdote)}>vote</button>
                     </div>
                 </div>
             )}
