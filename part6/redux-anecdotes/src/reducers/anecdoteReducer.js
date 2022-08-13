@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import anecdoteService from '../services/anecdoteService'
 
 
 const anecdotesAtStart = [
@@ -56,15 +57,22 @@ const initialState = anecdotesAtStart.map(asObject)
 // redux toolkit slice
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
-  initialState,
+  initialState: [], //initialState,
   reducers: {
     createAnedote(state, action) {
       const content = action.payload
-      state.push(asObject(content))
+      const object = asObject(content)
+      anecdoteService.createNew(object).then(_=>{
+        state.push(object)
+      })
     },
     vote(state, action) {
       const id = action.payload
       state.find(a => a.id === id).votes += 1
+    },
+    initAnedote(state, action) {
+      console.log(action)      
+      return action.payload
     }
   },
 })
@@ -88,7 +96,7 @@ const anecdoteSlice = createSlice({
 
 
 // redux toolkit actions
-export const { createAnedote, vote } = anecdoteSlice.actions
+export const { createAnedote, vote, initAnedote } = anecdoteSlice.actions
 
 /* -------------------------------------------------------------------------- */
 
