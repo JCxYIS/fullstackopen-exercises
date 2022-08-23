@@ -17,6 +17,12 @@ const Menu = () => {
   )
 }
 
+const Notif = ({notification}) => (
+  <div>
+    <p>{notification}</p>
+  </div>
+)
+
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
@@ -76,6 +82,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.setNotification(`A new anecdote "${content}" was created!`)
   }
 
   return (
@@ -120,6 +127,12 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
+  const SetNotif = (notif) => {
+    setNotification(notif)
+    setTimeout(() => {
+      setNotification("");
+    }, 5000);
+  }
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
@@ -140,10 +153,12 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+
   return (
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notif notification={notification} />
       {/* <AnecdoteList anecdotes={anecdotes} />
       <About />
       <CreateNew addNew={addNew} /> */}
@@ -151,7 +166,7 @@ const App = () => {
         <Route path="/anecdotes" element={ <AnecdoteList anecdotes={anecdotes} /> }/>
         <Route path="/anecdotes/:id" element={ <Anecdote anecdotes={anecdotes} /> }/>
         <Route path="/about" element={ <About /> } />
-        <Route path="/create" element={ <CreateNew addNew={addNew} /> } />
+        <Route path="/create" element={ <CreateNew addNew={addNew} setNotification={SetNotif} /> } />
       </Routes>
       <Footer />
     </div>
