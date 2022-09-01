@@ -1,10 +1,15 @@
 using bloglist_fullstack.Services;
+using bloglist_fullstack.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Append env into Configuration
+EnvHelper.LoadAllEnv();
+builder.Configuration.AddEnvironmentVariables();
 
 
 // CORS
@@ -77,9 +82,13 @@ app.UseRouting();
 
 
 app.MapControllerRoute(
-    name: "default",
+    name: "Default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.MapFallbackToFile("index.html"); ;
+app.MapControllerRoute(
+  name: "api",
+  pattern: "/api/{controller=Home}/{id?}");
+
+app.MapFallbackToFile("404.html"); ;
 
 app.Run();

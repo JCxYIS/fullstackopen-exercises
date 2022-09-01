@@ -18,7 +18,7 @@ namespace bloglist_fullstack.Services
         {
             // Get connection info
             //var mongoUrl = configuration.GetValue<string>("MongoDB:Url");
-            var mongoName = configuration.GetValue("MongoDB:Name", "main");
+            var mongoName = configuration.GetValue("MongoDB:Name", "test");
             var mongoUrl = Environment.GetEnvironmentVariable("MANGO_URL"); // we store it in settings.env file better keep it safe
             if (mongoUrl == null)
                 throw new Exception("MANGO_URL is null");

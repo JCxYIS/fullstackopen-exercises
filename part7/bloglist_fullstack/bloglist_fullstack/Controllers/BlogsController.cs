@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace bloglist_fullstack.Controllers
 {
-    [Route("api/blogs")]
     [ApiController]
-    public class BlogController : ControllerBase
+    [Route("api/[controller]")]
+    public class BlogsController : ControllerBase
     {
         private BlogService _blogService;
 
-        public BlogController(BlogService blogService)
+        public BlogsController(BlogService blogService)
         {
             _blogService = blogService;
         }

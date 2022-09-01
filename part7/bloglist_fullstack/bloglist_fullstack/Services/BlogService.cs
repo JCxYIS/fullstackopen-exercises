@@ -8,7 +8,7 @@ namespace bloglist_fullstack.Services
     {
         IMongoCollection<Blog> _blogs;
 
-        public BlogService(DatabaseService databaseService)
+        public BlogService(DatabaseService databaseService, ILogger<BlogService> logger)
         {
             _blogs = databaseService.Database.GetCollection<Blog>("BlogList");
         }
