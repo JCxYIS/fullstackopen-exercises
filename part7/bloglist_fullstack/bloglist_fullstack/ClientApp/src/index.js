@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import userReducer from './reducers/userReducer';
+import blogReducer from './reducers/blogReducer';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -15,7 +16,8 @@ const root = createRoot(rootElement);
 
 const store = configureStore({
   reducer: {
-    user: userReducer
+    user: userReducer,
+    blog: blogReducer
   }
 })
 

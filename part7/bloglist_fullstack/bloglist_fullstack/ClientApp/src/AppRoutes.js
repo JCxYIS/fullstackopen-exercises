@@ -1,5 +1,6 @@
 import BlogList from "./components/BlogList";
 import { Counter } from "./components/Counter";
+import CreateBlog from "./components/CreateBlog";
 import { FetchData } from "./components/FetchData";
 import Home from "./components/Home";
 
@@ -19,6 +20,10 @@ const AppRoutes = [
   {
     path: '/blogs',
     element: <BlogList />
+  },
+  {
+    path: '/create',
+    element: <CreateBlog />
   }
 ];
 

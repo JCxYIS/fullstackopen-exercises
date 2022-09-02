@@ -24,11 +24,13 @@ namespace bloglist_fullstack.Controllers
         [Authorize]
         public async Task<User> GetUser()
         {
+            if (User.Identity?.Name == null)
+                throw new ArgumentNullException();
             return await _userService.GetUser(User.Identity.Name);
         }
 
         [HttpGet("all")]
-        //[Authorize]
+        [Authorize]
         public async Task<List<User>> GetAllUsers()
         {
             return await _userService.GetAllUsers();
@@ -40,7 +42,9 @@ namespace bloglist_fullstack.Controllers
             var result = await _userService.ValidateUser(loginForm.username, loginForm.password);
             if (result.IsSuccess)
             {
-                return Ok(new ResponseModel(true, "", _jwtService.GenerateToken(loginForm.username)));
+                string token = _jwtService.GenerateToken(loginForm.username);
+                Response.Cookies.Append("X-Access-Token", token); // 把 token 塞進 cookie (如果有)
+                return Ok(new ResponseModel(true, "", token));
             }
             return BadRequest(result);
         }

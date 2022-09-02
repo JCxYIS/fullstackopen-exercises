@@ -1,5 +1,5 @@
 ﻿import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import accountService from "../services/accountService";
 
 const userReducer = createSlice({
   name: 'user',
@@ -19,14 +19,14 @@ const userReducer = createSlice({
 
 export const doSignIn = (loginFormJson) => {
   return async dispatch => {
-    const response = await axios.post("/api/users/login", loginFormJson)
+    const token = await accountService.login(loginFormJson)
     //console.log(response)
-    dispatch(setUserObject({
-      token: response.data.data,
+    dispatch(userReducer.actions.setUserObject({
+      token: token,
       username: loginFormJson.username
     }))
   }
 }
 
-export const { setUserObject, doSignOut } = userReducer.actions
+export const { doSignOut } = userReducer.actions
 export default userReducer.reducer

@@ -57,6 +57,16 @@ builder.Services
             // "1234567890123456" 應該從 IConfiguration 取得
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JwtSettings:SignKey")))
         };
+        // (網頁使用) 如果 cookie 有指定的 key ，就把它當 token 使用
+        options.Events = new JwtBearerEvents();
+        options.Events.OnMessageReceived = context => 
+        {
+            if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+            {
+                context.Token = context.Request.Cookies["X-Access-Token"];
+            }
+            return Task.CompletedTask;
+        };
     });
 
 builder.Services.AddControllersWithViews();
@@ -74,12 +84,11 @@ app.UseCors("cors");
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "Default",

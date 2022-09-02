@@ -28,6 +28,8 @@ namespace bloglist_fullstack.Controllers
         [Authorize]
         public async Task<IActionResult> Post([FromBody] Blog newPost)
         {
+            if (User.Identity?.Name == null)
+                throw new ArgumentNullException();
             newPost.id = "";
             newPost.author = User.Identity.Name;
             await _blogService.CreateAsync(newPost);
@@ -46,7 +48,7 @@ namespace bloglist_fullstack.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var targetBlog = await _blogService.GetBlogAsync(id);
-            if (targetBlog.author == User.Identity.Name)
+            if (targetBlog.author == User.Identity?.Name)
             {
                 await _blogService.DeleteAsync(id);
                 return Ok();
