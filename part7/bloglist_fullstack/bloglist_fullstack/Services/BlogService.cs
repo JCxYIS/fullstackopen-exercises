@@ -37,5 +37,19 @@ namespace bloglist_fullstack.Services
         {
             await _blogs.DeleteOneAsync(blog => blog.id == id);
         }
+
+        // should be cached since this do a lot of work
+        public async Task<List<KeyValuePair<string, int>>> GetLeaderboard()
+        {
+            var blogs = await GetBlogsAsync();
+
+            // store to dict
+            Dictionary<string, int> blogsDict = new Dictionary<string, int>();
+            foreach(var blog in blogs)
+            {
+                blogsDict[blog.author] = blogsDict.TryGetValue(blog.author, out int value) ? value+1 : 1;
+            }
+            return blogsDict.OrderByDescending(b => b.Value).ToList();
+        }
     }
 }

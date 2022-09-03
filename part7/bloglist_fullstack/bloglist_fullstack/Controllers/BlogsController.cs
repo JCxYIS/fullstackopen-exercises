@@ -64,5 +64,11 @@ namespace bloglist_fullstack.Controllers
             await _blogService.UpdateAsync(blog.id, blog);
             return Ok();
         }
+
+        [HttpGet("leaderboard")]
+        public async Task<IActionResult> Leaderboard()
+        {
+            return Ok(await _blogService.GetLeaderboard());
+        }
     }
 }

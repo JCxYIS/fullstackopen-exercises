@@ -3,6 +3,7 @@ import { Counter } from "./components/Counter";
 import CreateBlog from "./components/CreateBlog";
 import { FetchData } from "./components/FetchData";
 import Home from "./components/Home";
+import Users from "./components/Users";
 
 const AppRoutes = [
   {
@@ -24,6 +25,11 @@ const AppRoutes = [
   {
     path: '/create',
     element: <CreateBlog />
+  },
+  ,
+  {
+    path: '/users',
+    element: <Users />
   }
 ];
 

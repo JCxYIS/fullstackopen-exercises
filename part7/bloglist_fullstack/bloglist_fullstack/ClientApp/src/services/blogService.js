@@ -21,4 +21,8 @@ const like = async (blogId) => {
   return await axios.post(`${baseUrl}/${blogId}/like`);
 }
 
-export default { getAll, create, remove, like }
+const leaderboard = async () => {
+  return await (await axios.get(`${baseUrl}/leaderboard`)).data;
+}
+
+export default { getAll, create, remove, like, leaderboard }
