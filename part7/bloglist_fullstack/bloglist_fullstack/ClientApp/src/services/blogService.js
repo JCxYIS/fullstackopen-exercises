@@ -13,4 +13,12 @@ const create = async (blog/*, token*/) => {
   return response.data
 }
 
-export default { getAll, create }
+const remove = async (blogId) => {
+  return await axios.delete(`${baseUrl}/${blogId}`);
+}
+
+const like = async (blogId) => {
+  return await axios.post(`${baseUrl}/${blogId}/like`);
+}
+
+export default { getAll, create, remove, like }

@@ -56,5 +56,13 @@ namespace bloglist_fullstack.Controllers
             return Forbid();
         }
 
+        [HttpPost("{id}/like")]
+        public async Task<IActionResult> Like(string id)
+        {
+            var blog = await _blogService.GetBlogAsync(id);
+            blog.likes += 1;
+            await _blogService.UpdateAsync(blog.id, blog);
+            return Ok();
+        }
     }
 }

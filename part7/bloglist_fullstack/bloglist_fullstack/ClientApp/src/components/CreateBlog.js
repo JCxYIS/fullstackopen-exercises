@@ -16,9 +16,9 @@ const CreateBlog = () => {
       // alert(`Successfully Create post `)
       window.location = '/blogs'
     } 
-    catch (exception) {
-      alert('Failed. \n')
-      console.error(exception)
+    catch (e) {
+      alert('Create Failed: '+ e.response.statusText)
+      console.error(e)
     }
 
   }
