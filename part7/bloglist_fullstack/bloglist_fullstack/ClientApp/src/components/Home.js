@@ -2,10 +2,10 @@ import def from 'ajv/dist/vocabularies/applicator/if';
 import React, { Component } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input } from 'reactstrap';
-import { doSignIn } from '../reducers/userReducer';
+import { doSignIn, doSignOut } from '../reducers/userReducer';
 
 const Home = () => {
-  
+
   const dispatch = useDispatch()
   const user = useSelector((state) => {
     //console.log(state) // == redux store state
@@ -19,8 +19,12 @@ const Home = () => {
 
   let content;
   if (loggedIn) {
-    content = (<h2>My Blogs</h2>)
     // TODO get my bloglist
+    content = (
+      <>
+        <h2>My Blogs</h2>
+        <Button color="primary" onClick={() => dispatch(doSignOut())}>Sign Out</Button>
+      </>)
   }
   else {
     let handleLogin = (form) => {

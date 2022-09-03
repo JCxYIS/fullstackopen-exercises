@@ -1,5 +1,6 @@
 ﻿import { createSlice } from "@reduxjs/toolkit";
 import accountService from "../services/accountService";
+import cookie from 'react-cookies'
 
 const userReducer = createSlice({
   name: 'user',
@@ -12,6 +13,7 @@ const userReducer = createSlice({
       }
     },
     doSignOut(state, action) {
+      cookie.remove('X-Access-Token')
       return null
     }
   }
